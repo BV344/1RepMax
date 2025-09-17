@@ -1,19 +1,51 @@
-# Python
+# ========================
+# Python / Flask
+# ========================
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
 *.env
 .venv/
-
-# Flask
 instance/
 *.db
 
-# Node (frontend)
+# ========================
+# Node / Frontend (Vite / React)
+# ========================
 frontend/node_modules/
 frontend/dist/
+node_modules/
+dist/
+dist-ssr/
+*.local
 
-# IDE
+# ========================
+# IDE / Editor
+# ========================
+# JetBrains (PyCharm, WebStorm, IntelliJ, etc.)
 .idea/
 *.iml
+
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+
+# Other editor/OS artifacts
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ========================
+# Logs
+# ========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
