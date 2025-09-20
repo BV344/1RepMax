@@ -1,0 +1,41 @@
+/* Login.css */
+
+form {
+    max-width: 360px;
+    margin: 4rem auto;
+    padding: var(--space-5);
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-2);
+    box-shadow: var(--shadow-1);
+}
+
+.login-label {
+    display: block;
+    margin-bottom: var(--space-4);
+    font-weight: 600;
+    color: var(--text);
+}
+
+.login-label input {
+    margin-top: var(--space-2);
+}
+
+.login-button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--primary);
+    color: var(--primary-contrast);
+    border: none;
+    border-radius: var(--radius-1);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-1);
+    transition: background 0.2s ease;
+}
+
+.login-button:hover {
+    background: color-mix(in srgb, var(--primary) 90%, black);
+}
+
