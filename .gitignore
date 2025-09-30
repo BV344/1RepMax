@@ -9,6 +9,7 @@ __pycache__/
 .venv/
 instance/
 *.db
+db.*
 
 # ========================
 # Node / Frontend (Vite / React)
