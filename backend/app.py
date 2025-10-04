@@ -1,5 +1,6 @@
 # DB Imports
 from db.models import Base, User, Workouts
+from datetime import datetime, timezone
 
 # SQLalchemy Imports
 from sqlalchemy import create_engine
@@ -24,6 +25,32 @@ def login():
     print(data.get("username", "ERROR"))
 
     return jsonify(message="Hello from Backend")
+
+
+@app.route("/api/create_account", methods=["POST"])
+def create_account():
+    data = request.get_json(force=True)
+
+    first_name = data.get("firstName", "")
+    last_name = data.get("lastName", "")
+    username = data.get("username", "")
+    password = data.get("password", "")
+
+    with Session(engine) as session:
+        new_user = User(
+            username=username,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            date_created=datetime.now(timezone.utc),
+            last_login=datetime.now(timezone.utc)
+        )
+        session.add(new_user)
+        session.commit()
+
+    print("DEBUGGING", first_name, last_name, username, password)
+
+    return jsonify(message="Your Account Has Been Created Successfully"), 201
 
 
 if __name__ == "__main__":

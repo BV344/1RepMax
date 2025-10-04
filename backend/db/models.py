@@ -12,6 +12,8 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(30), unique=True, nullable=False, index=True)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
+    first_name: Mapped[str] = mapped_column(String(30), nullable=False)
+    last_name: Mapped[str] = mapped_column(String(30), nullable=False)
     date_created: Mapped[Optional[datetime]] = mapped_column()
     last_login: Mapped[Optional[datetime]] = mapped_column()
 
@@ -25,5 +27,7 @@ class Workouts(Base):
     weight: Mapped[int] = mapped_column()
     reps: Mapped[int] = mapped_column()
     date_updated: Mapped[Optional[datetime]] = mapped_column()
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
 
     user: Mapped["User"] = relationship(back_populates="workouts")

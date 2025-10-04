@@ -1,4 +1,5 @@
-import {useState} from "react"
+import { useState } from "react"
+import { Link } from "react-router-dom"
 import '../styles/Login.css'
 
 export default function Login(){
@@ -44,6 +45,7 @@ export default function Login(){
                     placeholder="Enter Your Password"
                 />
             </label>
+            <Link className="create-acct-link" to="/create-account">Create an Account</Link>
             <button className="login-button" type="submit">Login</button>
         </form>
     );
