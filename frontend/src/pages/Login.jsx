@@ -62,7 +62,12 @@ export default function Login(){
                     placeholder="Enter Your Password"
                 />
             </label>
-            <Link className="create-acct-link" to="/create-account">Create an Account</Link>
+            <p className="create-acct-text">
+                Don’t have an account?{" "}
+                <Link to="/create-account" className="create-acct-link">
+                    Create one
+                </Link>
+            </p>
             <button className="login-button" type="submit">Login</button>
         </form>
     );

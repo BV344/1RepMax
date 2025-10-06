@@ -39,3 +39,21 @@ form {
     background: color-mix(in srgb, var(--primary) 90%, black);
 }
 
+.create-acct-text {
+    text-align: center;
+    margin-top: var(--space-4);
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.create-acct-link {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.create-acct-link:hover {
+    color: color-mix(in srgb, var(--primary) 85%, black);
+    text-decoration: underline;
+}
