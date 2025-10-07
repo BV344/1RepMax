@@ -1,0 +1,87 @@
+/* CreateAccount.css */
+/* Uses tokens from main.css (colors, radius, shadow, etc.) */
+
+/* Layout polish for the form */
+.create-acct-form {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 480px;
+    margin-inline: auto;
+}
+
+.field {
+    position: relative;
+}
+
+/* Password wrapper positions the eye icon */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 2.5rem; /* make space for the eye */
+}
+
+/* Eye button */
+.eye-toggle {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.eye-toggle:hover {
+    opacity: 1;
+}
+
+/*.hint {*/
+/*    display: block;*/
+/*    margin-top: .35rem;*/
+/*    color: var(--muted);*/
+/*    font-size: 0.9em;*/
+/*}*/
+/*.hint.error { color: var(--danger); }*/
+
+/* Confirm password status chip */
+.chip {
+    position: absolute;
+    right: .5rem;
+    top: 2.35rem;
+    padding: .15rem .5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    font-size: 0.8em;
+    user-select: none;
+}
+.chip-ok   { border-color: var(--success); color: var(--success); }
+.chip-warn { border-color: var(--danger);  color: var(--danger);  }
+
+/* Field success / error states */
+.confirm-wrapper.ok input {
+    border-color: var(--success);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--success) 20%, transparent);
+    transition: box-shadow .25s ease, border-color .25s ease;
+}
+.confirm-wrapper.error input[aria-invalid="true"] {
+    border-color: var(--danger);
+}
+
+/* Button micro-interactions */
+.create-acct-button {
+    width: 100%;
+}
+.create-acct-button.btn-disabled {
+    opacity: .75;
+    cursor: not-allowed;
+    /* Soft attention pulse to indicate there’s something to fix */
+    animation: btn-pulse 1.8s ease-in-out infinite;
+}
