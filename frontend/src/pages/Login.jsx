@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import '../styles/Login.css'
+import '../styles/CreateAccount.css'
 
 export default function Login(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -13,7 +15,7 @@ export default function Login(){
         alert(`From Submitted Username: ${username} & Password: ${password}`);
 
         try {
-            const response = await fetch("api/login", {
+            const response = await fetch("/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -43,25 +45,39 @@ export default function Login(){
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label className="login-label">
-                Username
+        <form className="login-form card" onSubmit={handleSubmit}>
+            <div className="field">
+                <label className="create-acct-label" htmlFor="username">Username</label>
                 <input
+                    id="username"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Enter Your Username"
                 />
-            </label>
-            <label className="login-label">
-                Password
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter Your Password"
-                />
-            </label>
+            </div>
+
+            <div className="field password-wrapper">
+                <label htmlFor="password">Password</label>
+                <div className="input-with-eye">
+                    <input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter Your Password"
+                    />
+                    <button
+                        type="button"
+                        className="eye-toggle-login"
+                        onClick={() => setShowPassword(p => !p)}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                        {showPassword ? "🙈" : "👁️"}
+                    </button>
+                </div>
+            </div>
+
             <p className="create-acct-text">
                 Don’t have an account?{" "}
                 <Link to="/create-account" className="create-acct-link">

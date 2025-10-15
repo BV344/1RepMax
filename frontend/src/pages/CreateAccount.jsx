@@ -105,24 +105,22 @@ export default function CreateAccount() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
-                    onChange={(e) => {
-                        setPassword(e.target.value);
-                    }}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Create a Password"
-                    minLength={12}
+                    minLength={8}
                     required
                     aria-describedby="passwordHelp"
                 />
                 <button
                     type="button"
-                    className="eye-toggle"
+                    className="eye-toggle-create-acct"
                     onClick={() => setShowPassword((prev) => !prev)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                     {showPassword ? "🙈" : "👁️"}
                 </button>
                 <small id="passwordHelp" className="hint">
-                    Use at least 12 characters.
+                    Use at least 8 characters.
                 </small>
             </div>
 

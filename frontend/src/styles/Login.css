@@ -1,24 +1,10 @@
 /* Login.css */
 
-form {
-    max-width: 360px;
-    margin: 4rem auto;
-    padding: var(--space-5);
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-2);
-    box-shadow: var(--shadow-1);
-}
-
-.login-label {
-    display: block;
-    margin-bottom: var(--space-4);
-    font-weight: 600;
-    color: var(--text);
-}
-
-.login-label input {
-    margin-top: var(--space-2);
+.login-form {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 480px;
+    margin-inline: auto;
 }
 
 .login-button {
@@ -37,6 +23,29 @@ form {
 
 .login-button:hover {
     background: color-mix(in srgb, var(--primary) 90%, black);
+}
+.input-with-eye { position: relative; }
+.input-with-eye input { padding-right: 2.5rem; }
+.input-with-eye .eye-toggle-login {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.eye-toggle-login {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
 }
 
 .create-acct-text {

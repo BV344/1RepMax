@@ -23,7 +23,7 @@
 }
 
 /* Eye button */
-.eye-toggle {
+.eye-toggle-create-acct {
     position: absolute;
     right: 0.5rem;
     top: 50%;
@@ -41,14 +41,6 @@
 .eye-toggle:hover {
     opacity: 1;
 }
-
-/*.hint {*/
-/*    display: block;*/
-/*    margin-top: .35rem;*/
-/*    color: var(--muted);*/
-/*    font-size: 0.9em;*/
-/*}*/
-/*.hint.error { color: var(--danger); }*/
 
 /* Confirm password status chip */
 .chip {
