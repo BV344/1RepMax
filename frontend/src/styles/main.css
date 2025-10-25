@@ -56,20 +56,6 @@ input, button, textarea, select { font: inherit; }
     --h3: clamp(18px, 1.2vw + 0.4rem, 24px);
 }
 
-/* Dark mode tokens */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #0b1020;
-        --bg-elev: #121931;
-        --text: #e5e7eb;
-        --muted: #a3a9b9;
-        --border: #27324a;
-        --primary: #60a5fa;
-        --primary-contrast: #0b1020;
-        --focus: #93c5fd;
-    }
-}
-
 /* 2) Base elements */
 html { scroll-behavior: smooth; }
 body {
@@ -173,7 +159,8 @@ th { text-align: left; font-weight: 700; }
     .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; }
 }
 
-/* 6) Overrides: put app-specific fixes/overrides below.
-      Keep selectors straightforward and place this file LAST in your bundle. */
-/* Example override:
-   .ThirdPartyWidget .button { border-radius: var(--radius-2); } */
+/* Removing Automatic Eye-Toggle Buttons from Microsoft Edge.*/
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
