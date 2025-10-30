@@ -1,0 +1,117 @@
+/* ===========================
+   Sidebar Component Styles
+   =========================== */
+
+.sb-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-elev);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-1);
+}
+
+.button-iconbtn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.sb-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Sidebar Navigation */
+.sb-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    background: var(--bg-elev);
+    border-right: 1px solid var(--border);
+    padding-top: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    box-shadow: var(--shadow-1);
+    z-index: 20;
+}
+
+.sb-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sb-link:hover {
+    background: var(--primary);
+    color: var(--primary-contrast);
+}
+
+.sb-link--active {
+    background: var(--primary);
+    color: var(--primary-contrast);
+}
+
+.sb-icon {
+    font-size: 1.2rem;
+}
+
+.sb-foot {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 220px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-elev);
+    padding: var(--space-3);
+}
+
+.sb-signout-btn {
+    width: 100%;
+    background: var(--danger);
+    color: var(--primary-contrast);
+    border: none;
+    padding: var(--space-3);
+    border-radius: var(--radius-1);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.sb-signout-btn:hover {
+    filter: brightness(1.05);
+}
+
+/* Collapsed state (optional) */
+.sb-nav.collapsed,
+.sb-foot.collapsed {
+    width: 70px;
+}
+
+.sb-nav.collapsed .sb-text,
+.sb-foot.collapsed .sb-signout-btn span {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .sb-nav {
+        width: 200px;
+    }
+    .sb-foot {
+        width: 200px;
+    }
+}

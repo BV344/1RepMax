@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react"
+import { useNavigate } from "react-router-dom"
 import '../styles/CreateAccount.css'
 
 export default function CreateAccount() {
@@ -9,6 +10,8 @@ export default function CreateAccount() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    const navigate = useNavigate();
 
 
     const passwordEntered = password.length > 0 && confirmPassword.length > 0;
@@ -45,11 +48,17 @@ export default function CreateAccount() {
             const data = await response.json();
 
             if(!response.ok){
-                throw new Error(data?.message || "Failed to Create Account");
+                new Error(data?.message || "Failed to Create Account");
             }
 
             alert(data.message || "Account Created");
-            // TODO: Navigate to Homepage
+            // Store JWT for later authentication
+            localStorage.setItem("access_token", data.access_token);
+
+            // Once account is created, go to HomePage
+            navigate("/home");
+
+
 
         } catch(err){
             console.error(`Could not create account: ${err}`);
