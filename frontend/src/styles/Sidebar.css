@@ -1,117 +1,121 @@
-/* ===========================
-   Sidebar Component Styles
-   =========================== */
 
-.sb-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-3) var(--space-4);
-    background: var(--bg-elev);
-    border-bottom: 1px solid var(--border);
-    box-shadow: var(--shadow-1);
-}
-
-.button-iconbtn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.sb-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    border: none;
-    cursor: pointer;
-    z-index: 10;
-}
-
-/* Sidebar Navigation */
-.sb-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 220px;
+/* Open Sidebar */
+.sidebar{
+    width: 250px;
     height: 100vh;
-    background: var(--bg-elev);
-    border-right: 1px solid var(--border);
-    padding-top: var(--space-6);
+    background-color: #f0f0f0;
+    border-right: 1px solid #e2e2e2;
+    padding: 12px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    box-shadow: var(--shadow-1);
-    z-index: 20;
+    gap: 8px;
+    position: sticky; /* stays visible on scroll */
+    top: 0;
+    transition: width 180ms ease; /* smooth collapse/expand */
 }
 
-.sb-link {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 500;
-    transition: background 0.2s ease, color 0.2s ease;
+/* Collapsed Sidebar */
+.sidebar.is-collapsed {
+    width: 56px;
+    padding: 12px 8px;
 }
 
-.sb-link:hover {
-    background: var(--primary);
-    color: var(--primary-contrast);
-}
-
-.sb-link--active {
-    background: var(--primary);
-    color: var(--primary-contrast);
-}
-
-.sb-icon {
-    font-size: 1.2rem;
-}
-
-.sb-foot {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 220px;
-    border-top: 1px solid var(--border);
-    background: var(--bg-elev);
-    padding: var(--space-3);
-}
-
-.sb-signout-btn {
-    width: 100%;
-    background: var(--danger);
-    color: var(--primary-contrast);
-    border: none;
-    padding: var(--space-3);
-    border-radius: var(--radius-1);
-    font-weight: 600;
+/* Collapse Button */
+.collapse-btn {
+    padding: 0;
     cursor: pointer;
+    align-self: flex-end;
+    border: none;
+    background: white;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 0 0 1px #ddd inset;
+    transition: transform 150ms ease, background 120ms ease;
+}
+.collapse-btn:hover {
+    background: #e9e9e9;
 }
 
-.sb-signout-btn:hover {
-    filter: brightness(1.05);
+.collapse-btn .icon {
+    width: 24px;
+    height: 24px;
+    display: block;
+    margin: auto;
 }
 
-/* Collapsed state (optional) */
-.sb-nav.collapsed,
-.sb-foot.collapsed {
-    width: 70px;
+/* Icon + Label Behavior */
+.nav-icon {
+    display: inline-grid;
+    place-items: center;
+    font-size: 18px;
 }
 
-.sb-nav.collapsed .sb-text,
-.sb-foot.collapsed .sb-signout-btn span {
+/* If Collapsed == true, then hide labels but keep icons */
+.sidebar.is-collapsed .nav-label {
     display: none;
 }
 
-/* Responsive */
-@media (max-width: 800px) {
-    .sb-nav {
-        width: 200px;
-    }
-    .sb-foot {
-        width: 200px;
-    }
+/* Center Icons a bit when collapsed */
+.sidebar.is-collapsed .nav-items {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding: 10px 0;
 }
+
+/* --- Horizontal pills nav --- */
+.nav.nav-horizontal {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: #ffffff;;
+    border: 1px solid var(--border,  #e2e8f0);
+    text-decoration: none;
+    color: inherit;
+    line-height: 1;
+    transition: background 120ms ease, box-shadow 120ms ease, transform 80ms ease;
+    box-shadow: 0 0 0 1px #e9e9e9 inset;
+}
+
+.nav-pill:hover {
+    background: #f7f7f7;
+}
+
+.nav-pill:active {
+    border-color: var(--primary, #2563eb);
+    box-shadow: 0 0 0 1px var(--primary, #2563eb) inset;
+}
+
+.nav-icon {
+    display: inline-grid;
+    place-items: center;
+    font-size: 18px;
+}
+
+.sidebar.is-collapsed .nav-label {
+    display: none;
+}
+
+.sidebar.is-collapsed .nav.nav-horizontal {
+    justify-content: center;
+}
+
+.sidebar.is-collapsed .nav-pill {
+    padding: 8px;
+    border-radius: 12px;
+}
+
+
+
+
