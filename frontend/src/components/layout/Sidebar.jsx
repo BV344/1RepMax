@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
 import sidebarLogo from "../../assets/sidebar-logo.svg";
@@ -8,6 +8,27 @@ import "../../styles/Sidebar.css";
 
 export default function Sidebar(){
     const [collapsed, setCollapsed] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef(null);
+    // const initials = initialsFromName(user?.name || user?.displayName || "");
+
+    // Close on Click Outside
+    useEffect(() => {
+        function onDocClick(e) {
+            if (!menuRef.current) return;
+            if (!menuRef.current.contains(e.target)) setMenuOpen(false);
+        }
+        function onEsc(e) {
+            if (e.key === "Escape") setMenuOpen(false);
+        }
+        document.addEventListener("mousedown", onDocClick);
+        document.addEventListener("keydown", onEsc);
+        return () => {
+            document.removeEventListener("mousedown", onDocClick);
+            document.removeEventListener("keydown", onEsc);
+        };
+    }, []);
+
 
     return (
         <aside className={`sidebar ${collapsed ? "is-collapsed" : ""}`}>
@@ -38,6 +59,21 @@ export default function Sidebar(){
                     <span className="nav-label">Workout Log</span>
                 </NavLink>
             </nav>
+
+            {/* Account Strip with Pop Over Menu */}
+            <footer className="sidebar-footer" ref={menuRef}>
+                <button
+                    type="button"
+                    className="user-chip user-chip--button"
+                    onClick={() => setMenuOpen(v => !v)}
+                    aria-haspopup="menu"
+                    aria-expanded={menuOpen}
+                    aria-controls="account-menu"
+                    title="Your Profile"
+                >
+                    Username
+                </button>
+            </footer>
         </aside>
     );
 }
