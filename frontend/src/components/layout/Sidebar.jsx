@@ -10,7 +10,13 @@ export default function Sidebar(){
     const [collapsed, setCollapsed] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
-    // const initials = initialsFromName(user?.name || user?.displayName || "");
+
+
+    const handleLogout = () => {
+        // TODO: plug into your auth
+        // signOut();
+        console.log("Logging out…");
+    };
 
     // Close on Click Outside
     useEffect(() => {
@@ -71,8 +77,25 @@ export default function Sidebar(){
                     aria-controls="account-menu"
                     title="Your Profile"
                 >
-                    Username
+                    <span className="user-avatar" aria-hidden>👤</span>
+                    <span className="user-name">Username</span>
+                    <span className="chev" aria-hidden>▾</span>
                 </button>
+
+                {menuOpen && (
+                    <div id="account-menu" role="menu" className="account-menu">
+                        <div role="account-menu-email" aria-hidden>
+                            tempuser@1repmax.dev
+                        </div>
+                        <button
+                            role="menuitem"
+                            className="account-menu-item"
+                            onClick={handleLogout}
+                        >
+                            Log Out
+                        </button>
+                    </div>
+                )}
             </footer>
         </aside>
     );
