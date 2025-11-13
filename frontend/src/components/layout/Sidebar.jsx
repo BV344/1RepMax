@@ -32,6 +32,8 @@ export default function Sidebar() {
     const [collapsed, setCollapsed] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
     const handleLogout = () => {
         console.log("Logging out…");
