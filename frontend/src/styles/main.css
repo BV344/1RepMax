@@ -154,6 +154,14 @@ th { text-align: left; font-weight: 700; }
 .btn.outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
 .badge { display: inline-block; padding: .2rem .5rem; border-radius: 999px; background: var(--bg-elev); border: 1px solid var(--border); }
 
+.protected-route-loading {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    color: var(--muted);
+    font-weight: 500;
+}
+
 /* 5) Responsive tweaks */
 @media (max-width: 800px) {
     .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; }

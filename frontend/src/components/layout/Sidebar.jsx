@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import sidebarLogo from "../../assets/sidebar-logo.svg";
 import "../../styles/Sidebar.css";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const NAV_ITEMS = [
     {
