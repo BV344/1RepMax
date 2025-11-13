@@ -36,14 +36,32 @@ jwt = JWTManager(app) # Allows JSON Web Tokens to Sign-In/Out Securely
 # Converts the SQLAlchemy User object into a JSON-safe ID for JWT
 @jwt.user_identity_loader
 def user_identity_lookup(user):
-    return user.id
+    """Ensure JWT subjects are serialised as strings."""
+    return str(user.id)
 
 # Looks up the User object automatically when JWT is verified
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]
+
+    try:
+        user_id = int(identity)
+    except (TypeError, ValueError):
+        return None
+
     with Session(engine) as session:
-        return session.get(User, identity)
+        return session.get(User, user_id)
+
+
+def serialize_user(user: User) -> dict:
+    return {
+        "id": user.id,
+        "username": user.username,
+        "firstName": user.first_name,
+        "lastName": user.last_name,
+        "dateCreated": user.date_created.isoformat() if user.date_created else None,
+        "lastLogin": user.last_login.isoformat() if user.last_login else None,
+    }
 
 
 def serialize_user(user: User) -> dict:
