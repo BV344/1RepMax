@@ -11,7 +11,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 # JSON Web Token Imports
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, current_user
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager, current_user
 
 # .env Retrieval Imports
 from dotenv import load_dotenv
@@ -29,21 +29,39 @@ CORS(app) # Allows Flask to Communicate with React
 
 # Loading SUPER_SECRET_KEY from .env file and creating instance of JSON Web Token
 load_dotenv()
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "change-me-in-production")
 jwt = JWTManager(app) # Allows JSON Web Tokens to Sign-In/Out Securely
 
 
 # Converts the SQLAlchemy User object into a JSON-safe ID for JWT
 @jwt.user_identity_loader
 def user_identity_lookup(user):
-    return user.id
+    """Ensure JWT subjects are serialised as strings."""
+    return str(user.id)
 
 # Looks up the User object automatically when JWT is verified
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]
+
+    try:
+        user_id = int(identity)
+    except (TypeError, ValueError):
+        return None
+
     with Session(engine) as session:
-        return session.get(User, identity)
+        return session.get(User, user_id)
+
+
+def serialize_user(user: User) -> dict:
+    return {
+        "id": user.id,
+        "username": user.username,
+        "firstName": user.first_name,
+        "lastName": user.last_name,
+        "dateCreated": user.date_created.isoformat() if user.date_created else None,
+        "lastLogin": user.last_login.isoformat() if user.last_login else None,
+    }
 
 @app.route("/api/login", methods=["POST"])
 def login():
@@ -57,13 +75,22 @@ def login():
         if not user or not check_password_hash(user.password, password):
             return jsonify({"msg":"Invalid Username or Password"}), 401
 
+        user.last_login = datetime.now(timezone.utc)
+        session.commit()
+
         access_token = create_access_token(identity=user)
-        return jsonify(access_token=access_token)
+        return jsonify(access_token=access_token, user=serialize_user(user)), 200
 
 @app.route("/api/protected", methods=["GET"])
 @jwt_required()
 def protected():
     return jsonify(id=current_user.id, username=current_user.username)
+
+
+@app.route("/api/session", methods=["GET"])
+@jwt_required()
+def get_session():
+    return jsonify(user=serialize_user(current_user)), 200
 
 
 @app.route("/api/create_account", methods=["POST"])
