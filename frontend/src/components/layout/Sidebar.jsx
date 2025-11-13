@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import sidebarLogo from "../../assets/sidebar-logo.svg";
 import "../../styles/Sidebar.css";
@@ -32,13 +32,9 @@ export default function Sidebar() {
     const [collapsed, setCollapsed] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
-    const navigate = useNavigate();
-    const { user, logout } = useAuth();
 
     const handleLogout = () => {
-        logout();
-        setMenuOpen(false);
-        navigate("/", { replace: true });
+        console.log("Logging out…");
     };
 
     useEffect(() => {
@@ -117,8 +113,8 @@ export default function Sidebar() {
                         👤
                     </span>
                     <span className="user-meta">
-                        <span className="user-name">{user ? `${user.firstName} ${user.lastName}` : "Account"}</span>
-                        <span className="user-role">{user ? `@${user.username}` : "Authenticate"}</span>
+                        <span className="user-name">Temp User</span>
+                        <span className="user-role">Athlete</span>
                     </span>
                     <span className="chev" aria-hidden>
                         ▾
@@ -128,7 +124,7 @@ export default function Sidebar() {
 
                 {menuOpen && (
                     <div id="account-menu" role="menu" className="account-menu">
-                        <div className="account-menu-email">{user ? `Signed in as @${user.username}` : "Not signed in"}</div>
+                        <div className="account-menu-email">tempuser@1repmax.dev</div>
                         <button
                             type="button"
                             role="menuitem"
