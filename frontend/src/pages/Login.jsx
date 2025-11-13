@@ -1,5 +1,6 @@
-import { useState } from "react"
-import { useNavigate, Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useNavigate, useLocation, Link } from "react-router-dom"
+import { useAuth } from "../context/AuthContext.jsx"
 import '../styles/Login.css'
 import '../styles/CreateAccount.css'
 
@@ -7,45 +8,57 @@ export default function Login(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState(null);
 
+    const { login, isAuthenticated } = useAuth();
+    
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/home", { replace: true });
+        }
+    }, [isAuthenticated, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        alert(`From Submitted Username: ${username} & Password: ${password}`);
-
+        setError(null);
         try {
             const response = await fetch("/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    username: username,
-                    password: password,
+                    username,
+                    password,
                 }),
-            })
+            });
 
             const data = await response.json();
 
-            console.log("Checking Response: ", data.msg);
-            if(response.ok){
-                // Store JWT for later authentication
-                localStorage.setItem("access_token", data.access_token);
-
-                //Redirect to Home.jsx
-                navigate("/home");
-            } else{
-                alert(data.msg || "Login Failed. Please Check Your Credentials!");
+            if (!response.ok) {
+                setError(data.msg || "Login failed. Please check your credentials.");
+                return;
             }
 
-        } catch(err) {
-            console.error(`Login Failed with Error: ${err}`);
-            alert("Something went wrong whist Logging In. Try again Later");
-        }
+            login(data);
 
+            const redirectTo = location.state?.from?.pathname ?? "/home";
+            navigate(redirectTo, { replace: true });
+        } catch (err) {
+            console.error("Login Failed", err);
+            setError("We couldn't sign you in. Please try again in a moment.");
+        }
     }
 
     return (
         <form className="login-form card" onSubmit={handleSubmit}>
+            {error && (
+                <div className="form-error" role="alert">
+                    {error}
+                </div>
+            )}
+
             <div className="field">
                 <label className="create-acct-label" htmlFor="username">Username</label>
                 <input

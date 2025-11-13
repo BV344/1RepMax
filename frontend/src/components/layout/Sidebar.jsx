@@ -1,31 +1,58 @@
-import { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import sidebarLogo from "../../assets/sidebar-logo.svg";
 import "../../styles/Sidebar.css";
+import { useAuth } from "../../context/AuthContext.jsx";
 
+const NAV_ITEMS = [
+    {
+        to: "/dashboard",
+        icon: "📊",
+        label: "Dashboard",
+        title: "Overview & analytics",
+    },
+    {
+        to: "/1repmax",
+        icon: "🏋️",
+        label: "1RM Calculator",
+        title: "Plan your next personal best",
+    },
+    {
+        to: "/workout-log",
+        icon: "📈",
+        label: "Workout Log",
+        title: "Track volume & progress",
+    },
+];
 
+const cx = (...classes) => classes.filter(Boolean).join(" ");
 
-export default function Sidebar(){
+export default function Sidebar() {
     const [collapsed, setCollapsed] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
 
-
-    const handleLogout = () => {
-        // TODO: plug into your auth
-        // signOut();
-        console.log("Logging out…");
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate("/", { replace: true });
+        } catch (error) {
+            console.error("Failed to log out", error);
+        } finally {
+            setMenuOpen(false);
+        }
     };
 
-    // Close on Click Outside
     useEffect(() => {
-        function onDocClick(e) {
+        function onDocClick(event) {
             if (!menuRef.current) return;
-            if (!menuRef.current.contains(e.target)) setMenuOpen(false);
+            if (!menuRef.current.contains(event.target)) setMenuOpen(false);
         }
-        function onEsc(e) {
-            if (e.key === "Escape") setMenuOpen(false);
+        function onEsc(event) {
+            if (event.key === "Escape") setMenuOpen(false);
         }
         document.addEventListener("mousedown", onDocClick);
         document.addEventListener("keydown", onEsc);
@@ -35,59 +62,80 @@ export default function Sidebar(){
         };
     }, []);
 
+    useEffect(() => {
+        if (collapsed) setMenuOpen(false);
+    }, [collapsed]);
 
     return (
-        <aside className={`sidebar ${collapsed ? "is-collapsed" : ""}`}>
-            <button
-                className="collapse-btn"
-                onClick={() => setCollapsed(v => !v)}
-                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-                aria-expanded={!collapsed}
-                title={collapsed ? "Expand" : "Collapse"}
-            >
-                <img src={sidebarLogo} alt="Sidebar logo" className="icon" />
-            </button>
+        <aside className={cx("sidebar", collapsed && "is-collapsed")}>
+            <div className="sidebar-header">
+                <div className="brand" aria-label="1RepMax">
+                    <img src={sidebarLogo} alt="" aria-hidden className="brand-mark" />
+                    <span className="brand-text">1RepMax</span>
+                </div>
+                <button
+                    type="button"
+                    className="collapse-btn"
+                    onClick={() => setCollapsed(value => !value)}
+                    aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                    aria-expanded={!collapsed}
+                    title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                >
+                    <span className="collapse-icon" aria-hidden>
+                        ‹
+                    </span>
+                    <span className="sr-only">Toggle sidebar</span>
+                </button>
+            </div>
 
-            {/* Horizontal Page List */}
-            <nav className="nav nav-horizontal" aria-label="Primary">
-                <NavLink to="/dashboard" className="nav-pill">
-                    <span className="nav-icon" aria-hidden>📊</span>
-                    <span className="nav-label">Dashboard</span>
-                </NavLink>
-
-                <NavLink to="/1repmax" className="nav-pill">
-                    <span className="nav-icon" aria-hidden>🏋️</span>
-                    <span className="nav-label">1RepMax</span>
-                </NavLink>
-
-                <NavLink to="/workout-log" className="nav-pill">
-                    <span className="nav-icon" aria-hidden>📈</span>
-                    <span className="nav-label">Workout Log</span>
-                </NavLink>
+            <nav className="nav" aria-label="Primary">
+                <div className="nav-group" role="list">
+                    {NAV_ITEMS.map(item => (
+                        <NavLink
+                            key={item.to}
+                            to={item.to}
+                            end
+                            className={({ isActive }) => cx("nav-link", isActive && "is-active")}
+                            title={collapsed ? item.label : undefined}
+                        >
+                            <span className="nav-icon" aria-hidden>
+                                {item.icon}
+                            </span>
+                            <span className="nav-label">{item.label}</span>
+                            <span className="nav-subtitle">{item.title}</span>
+                        </NavLink>
+                    ))}
+                </div>
             </nav>
 
-            {/* Account Strip with Pop Over Menu */}
             <footer className="sidebar-footer" ref={menuRef}>
                 <button
                     type="button"
-                    className="user-chip user-chip--button"
-                    onClick={() => setMenuOpen(v => !v)}
+                    className="user-chip"
+                    onClick={() => setMenuOpen(value => !value)}
                     aria-haspopup="menu"
                     aria-expanded={menuOpen}
                     aria-controls="account-menu"
-                    title="Your Profile"
+                    title={collapsed ? "Account" : undefined}
                 >
-                    <span className="user-avatar" aria-hidden>👤</span>
-                    <span className="user-name">Username</span>
-                    <span className="chev" aria-hidden>▾</span>
+                    <span className="user-avatar" aria-hidden>
+                        👤
+                    </span>
+                    <span className="user-meta">
+                        <span className="user-name">{user ? `${user.firstName} ${user.lastName}` : "Account"}</span>
+                        <span className="user-role">{user ? `@${user.username}` : "Authenticate"}</span>
+                    </span>
+                    <span className="chev" aria-hidden>
+                        ▾
+                    </span>
+                    <span className="sr-only">Open account menu</span>
                 </button>
 
                 {menuOpen && (
                     <div id="account-menu" role="menu" className="account-menu">
-                        <div role="account-menu-email" aria-hidden>
-                            tempuser@1repmax.dev
-                        </div>
+                        <div className="account-menu-email">{user ? `Signed in as @${user.username}` : "Not signed in"}</div>
                         <button
+                            type="button"
                             role="menuitem"
                             className="account-menu-item"
                             onClick={handleLogout}

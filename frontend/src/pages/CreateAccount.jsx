@@ -52,10 +52,11 @@ export default function CreateAccount() {
             }
 
             alert(data.message || "Account Created");
-            // Store JWT for later authentication
-            localStorage.setItem("access_token", data.access_token);
 
-            // Once account is created, go to HomePage
+            if (data?.access_token) {
+                localStorage.setItem("access_token", data.access_token);
+            }
+
             navigate("/home");
 
 
