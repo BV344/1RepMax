@@ -64,16 +64,6 @@ def serialize_user(user: User) -> dict:
     }
 
 
-def serialize_user(user: User) -> dict:
-    return {
-        "id": user.id,
-        "username": user.username,
-        "firstName": user.first_name,
-        "lastName": user.last_name,
-        "dateCreated": user.date_created.isoformat() if user.date_created else None,
-        "lastLogin": user.last_login.isoformat() if user.last_login else None,
-    }
-
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json(force=True)
