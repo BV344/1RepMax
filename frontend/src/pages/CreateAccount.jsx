@@ -20,10 +20,10 @@ export default function CreateAccount() {
     );
 
     const canSubmit =
-        firstName.trim() &&
-        lastName.trim() &&
-        username.trim() &&
-        password.length >= 12 &&
+        Boolean(firstName.trim()) &&
+        Boolean(lastName.trim()) &&
+        Boolean(username.trim()) &&
+        password.length >= 8 &&
         passwordMatch &&
         !isSubmitting;
 
@@ -48,7 +48,7 @@ export default function CreateAccount() {
             const data = await response.json();
 
             if(!response.ok){
-                new Error(data?.message || "Failed to Create Account");
+                throw new Error(data?.message || "Failed to Create Account");
             }
 
             alert(data.message || "Account Created");

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import sidebarLogo from "../../assets/sidebar-logo.svg";
 import "../../styles/Sidebar.css";
@@ -36,7 +36,9 @@ export default function Sidebar() {
     const { user, logout } = useAuth();
 
     const handleLogout = () => {
-        console.log("Logging out…");
+        setMenuOpen(false);
+        logout();
+        navigate("/");
     };
 
     useEffect(() => {
